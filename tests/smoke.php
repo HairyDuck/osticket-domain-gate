@@ -46,10 +46,10 @@ if (!is_array($plugin) || empty($plugin['plugin'])) {
 } else {
     ok('plugin.php metadata');
 }
-if (empty($plugin['version']) || $plugin['version'] !== '1.0.1') {
-    fail('plugin version expected 1.0.1');
+if (empty($plugin['version']) || $plugin['version'] !== '1.0.2') {
+    fail('plugin version expected 1.0.2');
 } else {
-    ok('plugin version 1.0.1');
+    ok('plugin version 1.0.2');
 }
 foreach (array('cursor', 'synthetix') as $brand) {
     if (stripos(json_encode($plugin), $brand) !== false) {

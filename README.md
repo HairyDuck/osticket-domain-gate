@@ -121,6 +121,16 @@ Offline smoke: `php tests/smoke.php`
 
 ## Changelog
 
+### 1.0.2
+
+- Fix closing blocked tickets when the reply agent lacks department close permission (clear staff context / force close, with `setStatusId` fallback)
+
+### 1.0.1
+
+- Sectioned admin config (essentials, domains, rejection reply, channels, overrides)
+- Agent and closed-status dropdowns
+- Static canned-response preview in config
+
 ### 1.0.0
 
 - Initial release: allowlist / blocklist / both, canned rejection, organisation domains, ticket-ref bypass, `DOMAIN-GATE-ALLOW` staff command
@@ -131,7 +141,7 @@ Offline smoke: `php tests/smoke.php`
 
 ```text
 osticket-domain-gate/
-  plugin.php                 Metadata (version 1.0.0)
+  plugin.php                 Metadata (version 1.0.2)
   osticket-domain-gate.php   Bootstrap + signals
   config.php                 Admin settings
   include/class.domain_gate.php

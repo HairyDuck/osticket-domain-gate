@@ -288,13 +288,27 @@ class DomainGateEngine
                 }
             }
 
+            // Close / reject without staff role checks. Autoreply agents often
+            // lack PERM_CLOSE on the ticket department, which makes setStatus()
+            // return false while $thisstaff is set.
             $statusId = (int) $conf->get('closed_status_id');
             if ($statusId > 0 && class_exists('TicketStatus')) {
                 $status = TicketStatus::lookup($statusId);
+                $closedOk = false;
                 if ($status && method_exists($ticket, 'setStatus')) {
                     $cerr = array();
-                    $ticket->setStatus($status, false, $cerr, null, false);
-                } elseif (method_exists($ticket, 'setStatusId')) {
+                    $staffForClose = $thisstaff;
+                    $thisstaff = null;
+                    $closedOk = (bool) $ticket->setStatus(
+                        $status,
+                        'Domain Gate',
+                        $cerr,
+                        false,
+                        true
+                    );
+                    $thisstaff = $staffForClose;
+                }
+                if (!$closedOk && method_exists($ticket, 'setStatusId')) {
                     $ticket->setStatusId($statusId);
                     if (method_exists($ticket, 'save')) {
                         $ticket->save();
