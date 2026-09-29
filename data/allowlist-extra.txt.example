@@ -1,0 +1,4 @@
+# Runtime allowlist additions (one domain per line).
+# Written when staff posts an internal note: DOMAIN-GATE-ALLOW
+# This file is optional; base allowlist lives in plugin config.
+
