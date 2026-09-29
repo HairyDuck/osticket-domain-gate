@@ -1,5 +1,9 @@
 # osTicket Domain Gate
 
+<p align="center">
+  <img src="assets/logo.svg" alt="osTicket Domain Gate" width="96" height="96">
+</p>
+
 **Domain allowlist / blocklist plugin** for osTicket. Gate new tickets by sender domain, notify blocked senders with a canned reply, honour organisation domain mappings, allow existing ticket references, and let staff permanently allow a domain with one internal note.
 
 Same install model as other osTicket plugins. No core file patches. MIT licensed.
@@ -152,6 +156,7 @@ osticket-domain-gate/
   include/class.domain_gate.php
   data/allowlist-extra.txt.example
   tests/smoke.php
+  assets/logo.svg
   LICENSE
   README.md
 ```

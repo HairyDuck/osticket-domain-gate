@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="osTicket Domain Gate">
+  <rect width="64" height="64" rx="14" fill="#1a1208"/>
+  <rect x="10" y="18" width="36" height="26" rx="3" stroke="#fcd34d" stroke-width="2.2" fill="none"/>
+  <path d="M10 22l18 12 18-12" stroke="#fcd34d" stroke-width="2.2" fill="none" stroke-linejoin="round"/>
+  <circle cx="46" cy="44" r="11" fill="#fbbf24"/>
+  <path d="M41 44l3.5 3.5 7-8" stroke="#0b1220" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
