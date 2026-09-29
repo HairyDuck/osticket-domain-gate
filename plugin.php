@@ -12,7 +12,7 @@
  */
 return array(
     'id'          => 'opensource:osticket-domain-gate',
-    'version'     => '1.0.2',
+    'version'     => '1.0.3',
     'name'        => 'osTicket Domain Gate',
     'author'      => 'osTicket Domain Gate contributors',
     'description' => 'Allow or block new tickets by sender domain, notify with a canned reply, recognise organisation domains, and let staff allow a domain via an internal note.',

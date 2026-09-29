@@ -288,33 +288,7 @@ class DomainGateEngine
                 }
             }
 
-            // Close / reject without staff role checks. Autoreply agents often
-            // lack PERM_CLOSE on the ticket department, which makes setStatus()
-            // return false while $thisstaff is set.
-            $statusId = (int) $conf->get('closed_status_id');
-            if ($statusId > 0 && class_exists('TicketStatus')) {
-                $status = TicketStatus::lookup($statusId);
-                $closedOk = false;
-                if ($status && method_exists($ticket, 'setStatus')) {
-                    $cerr = array();
-                    $staffForClose = $thisstaff;
-                    $thisstaff = null;
-                    $closedOk = (bool) $ticket->setStatus(
-                        $status,
-                        'Domain Gate',
-                        $cerr,
-                        false,
-                        true
-                    );
-                    $thisstaff = $staffForClose;
-                }
-                if (!$closedOk && method_exists($ticket, 'setStatusId')) {
-                    $ticket->setStatusId($statusId);
-                    if (method_exists($ticket, 'save')) {
-                        $ticket->save();
-                    }
-                }
-            }
+            self::applyBlockedStatus($ticket, (int) $conf->get('closed_status_id'));
 
             $domain = self::emailDomain((string) $ticket->getEmail());
             $note = sprintf(
@@ -327,6 +301,68 @@ class DomainGateEngine
         } finally {
             $thisstaff = $previous;
         }
+    }
+
+    /**
+     * Apply the configured block status.
+     *
+     * Ticket::setStatus() only supports open / closed / deleted. Custom
+     * statuses such as Rejected often use state "archived", which makes
+     * setStatus() return false. Those need setStatusId().
+     *
+     * Also clears $thisstaff while closing: reply agents (e.g. autoreply)
+     * frequently lack PERM_CLOSE on the ticket department.
+     *
+     * @return bool
+     */
+    private static function applyBlockedStatus(Ticket $ticket, $statusId)
+    {
+        global $thisstaff;
+
+        $statusId = (int) $statusId;
+        if ($statusId <= 0 || !class_exists('TicketStatus')) {
+            return false;
+        }
+
+        $status = TicketStatus::lookup($statusId);
+        if (!$status) {
+            self::sysLog('Domain Gate: closed_status_id not found: ' . $statusId);
+            return false;
+        }
+
+        $state = method_exists($status, 'getState') ? (string) $status->getState() : '';
+
+        if ($state === 'closed' && method_exists($ticket, 'setStatus')) {
+            $errors = array();
+            $savedStaff = isset($thisstaff) ? $thisstaff : null;
+            $thisstaff = null;
+            try {
+                $ok = (bool) $ticket->setStatus(
+                    $status,
+                    'Domain Gate',
+                    $errors,
+                    false,
+                    true
+                );
+            } finally {
+                $thisstaff = $savedStaff;
+            }
+            if ($ok) {
+                return true;
+            }
+            self::sysLog(
+                'Domain Gate: setStatus(closed) failed'
+                . (isset($errors['err']) ? (': ' . $errors['err']) : '')
+            );
+        }
+
+        // Archived / deleted / failed closed: direct status id write.
+        if (method_exists($ticket, 'setStatusId') && $ticket->setStatusId($statusId)) {
+            return true;
+        }
+
+        self::sysLog('Domain Gate: failed to apply status id ' . $statusId);
+        return false;
     }
 
     private static function staffNote(Ticket $ticket, $text, $conf, $staff = null)

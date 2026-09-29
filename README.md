@@ -121,9 +121,14 @@ Offline smoke: `php tests/smoke.php`
 
 ## Changelog
 
+### 1.0.3
+
+- Fix blocked status for **archived** custom statuses (e.g. Rejected): `Ticket::setStatus()` only supports open/closed/deleted, so Domain Gate now falls back to `setStatusId()`
+- Keep the Autoreply/close-permission workaround (clear staff context when closing)
+
 ### 1.0.2
 
-- Fix closing blocked tickets when the reply agent lacks department close permission (clear staff context / force close, with `setStatusId` fallback)
+- Attempt to close blocked tickets when the reply agent lacks department close permission
 
 ### 1.0.1
 
@@ -141,7 +146,7 @@ Offline smoke: `php tests/smoke.php`
 
 ```text
 osticket-domain-gate/
-  plugin.php                 Metadata (version 1.0.2)
+  plugin.php                 Metadata (version 1.0.3)
   osticket-domain-gate.php   Bootstrap + signals
   config.php                 Admin settings
   include/class.domain_gate.php

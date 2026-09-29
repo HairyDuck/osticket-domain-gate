@@ -155,7 +155,7 @@ class OsticketDomainGateConfig extends PluginConfig
                 'label'   => __('Close blocked tickets as'),
                 'default' => '3',
                 'choices' => $statuses,
-                'hint'    => __('Status applied after the rejection reply is posted.'),
+                'hint'    => __('Status after the rejection reply. Closed/Resolved use the normal close path. Archived statuses such as Rejected are applied directly (osTicket setStatus does not support archived).'),
             )),
 
             // --- Channels ---
