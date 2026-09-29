@@ -9,7 +9,8 @@
 Same install model as other osTicket plugins. No core file patches. MIT licensed.
 
 [![Licence](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
-[![osTicket](https://img.shields.io/badge/osTicket-1.17%2B%20%7C%201.18%2B-brightgreen.svg)](#requirements)
+[![osTicket](https://img.shields.io/badge/osTicket-1.17%2B%20%7C%201.18%2B-brightgreen.svg)](#compatibility)
+[![osTicket 2.0](https://img.shields.io/badge/osTicket%202.0-planned-lightgrey.svg)](#compatibility)
 [![PHP](https://img.shields.io/badge/PHP-8%2B-777BB4.svg)](#requirements)
 
 Repository: https://github.com/HairyDuck/osticket-domain-gate
@@ -46,6 +47,15 @@ Domain Gate applies a clear domain policy on `ticket.created`, sends a canned (o
 - osTicket **1.17+** or **1.18+** (PHP 8 recommended)
 - An active staff agent username for outbound rejection replies
 - Optional: a canned response for the rejection body
+
+## Compatibility
+
+| osTicket | Status |
+|----------|--------|
+| **1.17.x / 1.18.x** | Supported (this plugin) |
+| **2.0** | Planned – not compatible yet |
+
+osTicket 2.0 is a Laravel/React rewrite with a new plugin architecture. Legacy `include/plugins/` packages will not load unchanged ([official FAQ](https://next.osticket.com/faq)). A 2.0 port will follow once RC1 plugin docs and the public repo are available.
 
 ---
 
